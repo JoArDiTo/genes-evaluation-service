@@ -1,0 +1,97 @@
+-- CreateTable
+CREATE TABLE "TEMPLATE_TESTS" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "author" TEXT NOT NULL,
+    "available" BOOLEAN NOT NULL DEFAULT true,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TEMPLATE_TESTS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "QUESTIONS" (
+    "id" TEXT NOT NULL,
+    "template_test_id" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "QUESTIONS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ALTERNATIVES" (
+    "id" TEXT NOT NULL,
+    "template_test_id" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "value" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ALTERNATIVES_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CLASSIFICATIONS" (
+    "id" TEXT NOT NULL,
+    "template_test_id" TEXT NOT NULL,
+    "min_score" INTEGER NOT NULL,
+    "max_score" INTEGER NOT NULL,
+    "interpretation" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CLASSIFICATIONS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TESTS" (
+    "id" TEXT NOT NULL,
+    "score" INTEGER NOT NULL,
+    "classification_id" TEXT NOT NULL,
+    "template_test_id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TESTS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ANSWERS" (
+    "id" TEXT NOT NULL,
+    "test_id" TEXT NOT NULL,
+    "question_id" TEXT NOT NULL,
+    "alternative_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ANSWERS_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "QUESTIONS" ADD CONSTRAINT "QUESTIONS_template_test_id_fkey" FOREIGN KEY ("template_test_id") REFERENCES "TEMPLATE_TESTS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ALTERNATIVES" ADD CONSTRAINT "ALTERNATIVES_template_test_id_fkey" FOREIGN KEY ("template_test_id") REFERENCES "TEMPLATE_TESTS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CLASSIFICATIONS" ADD CONSTRAINT "CLASSIFICATIONS_template_test_id_fkey" FOREIGN KEY ("template_test_id") REFERENCES "TEMPLATE_TESTS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TESTS" ADD CONSTRAINT "TESTS_template_test_id_fkey" FOREIGN KEY ("template_test_id") REFERENCES "TEMPLATE_TESTS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TESTS" ADD CONSTRAINT "TESTS_classification_id_fkey" FOREIGN KEY ("classification_id") REFERENCES "CLASSIFICATIONS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ANSWERS" ADD CONSTRAINT "ANSWERS_test_id_fkey" FOREIGN KEY ("test_id") REFERENCES "TESTS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ANSWERS" ADD CONSTRAINT "ANSWERS_question_id_fkey" FOREIGN KEY ("question_id") REFERENCES "QUESTIONS"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ANSWERS" ADD CONSTRAINT "ANSWERS_alternative_id_fkey" FOREIGN KEY ("alternative_id") REFERENCES "ALTERNATIVES"("id") ON DELETE CASCADE ON UPDATE CASCADE;

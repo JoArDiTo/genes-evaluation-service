@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TemplateTest {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  author      String
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relación con la tabla Question
+  questions       Question[]
+  // Relación con la tabla Alternative
+  alternatives    Alternative[]
+  // Relación con la tabla Classification
+  classifications Classification[]
+  // Relación con la tabla Test
+  tests           Test[]
+
+  @@map("TEMPLATE_TESTS")
+}
+
+model Question {
+  id             String   @id @default(uuid())
+  templateTestId String   @map("template_test_id")
+  content        String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // TemplateTestId como llave foránea de Question
+  templateTest TemplateTest @relation(fields: [templateTestId], references: [id], onDelete: Cascade)
+
+  // Relación con la tabla Answer
+  answers Answer[]
+
+  @@map("QUESTIONS")
+}
+
+model Alternative {
+  id             String   @id @default(uuid())
+  templateTestId String   @map("template_test_id")
+  content        String
+  value          String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // TemplateTestId como llave foránea de Alternative
+  templateTest TemplateTest @relation(fields: [templateTestId], references: [id], onDelete: Cascade)
+
+  // Relación con la tabla Answer
+  answers Answer[]
+
+  @@map("ALTERNATIVES")
+}
+
+model Classification {
+  id             String   @id @default(uuid())
+  templateTestId String   @map("template_test_id")
+  minScore       Int      @map("min_score")
+  maxScore       Int      @map("max_score")
+  interpretation String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // TemplateTestId como llave foránea de Classification
+  templateTest TemplateTest @relation(fields: [templateTestId], references: [id], onDelete: Cascade)
+
+  // Relación con la tabla Test
+  tests Test[]
+
+  @@map("CLASSIFICATIONS")
+}
+
+model Test {
+  id               String @id @default(uuid())
+  score            Int
+  classificationId String @map("classification_id")
+  templateTestId   String @map("template_test_id")
+  userId           String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // TemplateTestId como llave foránea de Test
+  templateTest   TemplateTest   @relation(fields: [templateTestId], references: [id], onDelete: Cascade)
+  // ClassificationId como llave foránea de Test
+  classification Classification @relation(fields: [classificationId], references: [id], onDelete: Cascade)
+
+  // Relación con la tabla Answer
+  answers Answer[]
+
+  @@map("TESTS")
+}
+
+model Answer {
+  id            String   @id @default(uuid())
+  testId        String   @map("test_id")
+  questionId    String   @map("question_id")
+  alternativeId String   @map("alternative_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // TestId como llave foránea de Answer
+  test        Test        @relation(fields: [testId], references: [id], onDelete: Cascade)
+  // QuestionId como llave foránea de Answer
+  question    Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  // AlternativeId como llave foránea de Answer
+  alternative Alternative @relation(fields: [alternativeId], references: [id], onDelete: Cascade)
+
+  @@map("ANSWERS")
+}
