@@ -18,7 +18,7 @@ export class TemplateTestService extends PrismaClient implements OnModuleInit {
 
     if (existingTemplateTest) throw new RpcException({
       status: 400,
-      message: `The templateTest with name ${name} already exists`,
+      message: `The template test with name ${name} already exists`,
     })
 
     const newTemplateTest = await this.templateTest.create({
@@ -30,7 +30,7 @@ export class TemplateTestService extends PrismaClient implements OnModuleInit {
     return newTemplateTest;
   }
 
-  findAll() {
+  async findAll() {
     return this.templateTest.findMany({
       where: { available: true }
     });
@@ -40,10 +40,20 @@ export class TemplateTestService extends PrismaClient implements OnModuleInit {
     const exist = await this.templateTest.findUnique({ where: { id: id }});
     if (!exist) throw new RpcException({
       status: 400,
-      message: 'TemplateTest not found'
+      message: `Template test with id ${id} not found`
     });
 
-    return exist;
+    const questions = await this.question.findMany({
+      select: { id: true, content: true },
+      where: { templateTestId: id }
+    })
+
+    const alternatives = await this.alternative.findMany({
+      select: { id: true, content: true, value: true },
+      where: { templateTestId: id }
+    })
+
+    return { ...exist, questions, alternatives };
   }
 
   async update(id: string, updateTemplateTestDto: UpdateTemplateTestDto) {

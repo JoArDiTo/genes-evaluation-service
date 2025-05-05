@@ -54,7 +54,7 @@ model Alternative {
   id              String    @id @default(uuid())
   templateTestId  String    @map("template_test_id")
   content         String
-  value           String
+  value           Int
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime  @updatedAt @map("updated_at")
 

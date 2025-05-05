@@ -3779,15 +3779,25 @@ export namespace Prisma {
 
   export type AggregateAlternative = {
     _count: AlternativeCountAggregateOutputType | null
+    _avg: AlternativeAvgAggregateOutputType | null
+    _sum: AlternativeSumAggregateOutputType | null
     _min: AlternativeMinAggregateOutputType | null
     _max: AlternativeMaxAggregateOutputType | null
+  }
+
+  export type AlternativeAvgAggregateOutputType = {
+    value: number | null
+  }
+
+  export type AlternativeSumAggregateOutputType = {
+    value: number | null
   }
 
   export type AlternativeMinAggregateOutputType = {
     id: string | null
     templateTestId: string | null
     content: string | null
-    value: string | null
+    value: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3796,7 +3806,7 @@ export namespace Prisma {
     id: string | null
     templateTestId: string | null
     content: string | null
-    value: string | null
+    value: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3811,6 +3821,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type AlternativeAvgAggregateInputType = {
+    value?: true
+  }
+
+  export type AlternativeSumAggregateInputType = {
+    value?: true
+  }
 
   export type AlternativeMinAggregateInputType = {
     id?: true
@@ -3878,6 +3896,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AlternativeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AlternativeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AlternativeMinAggregateInputType
@@ -3908,6 +3938,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AlternativeCountAggregateInputType | true
+    _avg?: AlternativeAvgAggregateInputType
+    _sum?: AlternativeSumAggregateInputType
     _min?: AlternativeMinAggregateInputType
     _max?: AlternativeMaxAggregateInputType
   }
@@ -3916,10 +3948,12 @@ export namespace Prisma {
     id: string
     templateTestId: string
     content: string
-    value: string
+    value: number
     createdAt: Date
     updatedAt: Date
     _count: AlternativeCountAggregateOutputType | null
+    _avg: AlternativeAvgAggregateOutputType | null
+    _sum: AlternativeSumAggregateOutputType | null
     _min: AlternativeMinAggregateOutputType | null
     _max: AlternativeMaxAggregateOutputType | null
   }
@@ -4002,7 +4036,7 @@ export namespace Prisma {
       id: string
       templateTestId: string
       content: string
-      value: string
+      value: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["alternative"]>
@@ -4433,7 +4467,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Alternative", 'String'>
     readonly templateTestId: FieldRef<"Alternative", 'String'>
     readonly content: FieldRef<"Alternative", 'String'>
-    readonly value: FieldRef<"Alternative", 'String'>
+    readonly value: FieldRef<"Alternative", 'Int'>
     readonly createdAt: FieldRef<"Alternative", 'DateTime'>
     readonly updatedAt: FieldRef<"Alternative", 'DateTime'>
   }
@@ -8583,7 +8617,7 @@ export namespace Prisma {
     id?: StringFilter<"Alternative"> | string
     templateTestId?: StringFilter<"Alternative"> | string
     content?: StringFilter<"Alternative"> | string
-    value?: StringFilter<"Alternative"> | string
+    value?: IntFilter<"Alternative"> | number
     createdAt?: DateTimeFilter<"Alternative"> | Date | string
     updatedAt?: DateTimeFilter<"Alternative"> | Date | string
     templateTest?: XOR<TemplateTestScalarRelationFilter, TemplateTestWhereInput>
@@ -8608,7 +8642,7 @@ export namespace Prisma {
     NOT?: AlternativeWhereInput | AlternativeWhereInput[]
     templateTestId?: StringFilter<"Alternative"> | string
     content?: StringFilter<"Alternative"> | string
-    value?: StringFilter<"Alternative"> | string
+    value?: IntFilter<"Alternative"> | number
     createdAt?: DateTimeFilter<"Alternative"> | Date | string
     updatedAt?: DateTimeFilter<"Alternative"> | Date | string
     templateTest?: XOR<TemplateTestScalarRelationFilter, TemplateTestWhereInput>
@@ -8623,8 +8657,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: AlternativeCountOrderByAggregateInput
+    _avg?: AlternativeAvgOrderByAggregateInput
     _max?: AlternativeMaxOrderByAggregateInput
     _min?: AlternativeMinOrderByAggregateInput
+    _sum?: AlternativeSumOrderByAggregateInput
   }
 
   export type AlternativeScalarWhereWithAggregatesInput = {
@@ -8634,7 +8670,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Alternative"> | string
     templateTestId?: StringWithAggregatesFilter<"Alternative"> | string
     content?: StringWithAggregatesFilter<"Alternative"> | string
-    value?: StringWithAggregatesFilter<"Alternative"> | string
+    value?: IntWithAggregatesFilter<"Alternative"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Alternative"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Alternative"> | Date | string
   }
@@ -8996,7 +9032,7 @@ export namespace Prisma {
   export type AlternativeCreateInput = {
     id?: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     templateTest: TemplateTestCreateNestedOneWithoutAlternativesInput
@@ -9007,7 +9043,7 @@ export namespace Prisma {
     id?: string
     templateTestId: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     answers?: AnswerUncheckedCreateNestedManyWithoutAlternativeInput
@@ -9016,7 +9052,7 @@ export namespace Prisma {
   export type AlternativeUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     templateTest?: TemplateTestUpdateOneRequiredWithoutAlternativesNestedInput
@@ -9027,7 +9063,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     templateTestId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answers?: AnswerUncheckedUpdateManyWithoutAlternativeNestedInput
@@ -9037,7 +9073,7 @@ export namespace Prisma {
     id?: string
     templateTestId: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9045,7 +9081,7 @@ export namespace Prisma {
   export type AlternativeUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9054,7 +9090,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     templateTestId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9444,6 +9480,17 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type AlternativeCountOrderByAggregateInput = {
     id?: SortOrder
     templateTestId?: SortOrder
@@ -9451,6 +9498,10 @@ export namespace Prisma {
     value?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type AlternativeAvgOrderByAggregateInput = {
+    value?: SortOrder
   }
 
   export type AlternativeMaxOrderByAggregateInput = {
@@ -9471,7 +9522,11 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
+  export type AlternativeSumOrderByAggregateInput = {
+    value?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -9479,7 +9534,12 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type ClassificationCountOrderByAggregateInput = {
@@ -9520,22 +9580,6 @@ export namespace Prisma {
   export type ClassificationSumOrderByAggregateInput = {
     minScore?: SortOrder
     maxScore?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type ClassificationScalarRelationFilter = {
@@ -9879,6 +9923,14 @@ export namespace Prisma {
     connect?: AnswerWhereUniqueInput | AnswerWhereUniqueInput[]
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type TemplateTestUpdateOneRequiredWithoutAlternativesNestedInput = {
     create?: XOR<TemplateTestCreateWithoutAlternativesInput, TemplateTestUncheckedCreateWithoutAlternativesInput>
     connectOrCreate?: TemplateTestCreateOrConnectWithoutAlternativesInput
@@ -9933,14 +9985,6 @@ export namespace Prisma {
     connectOrCreate?: TestCreateOrConnectWithoutClassificationInput | TestCreateOrConnectWithoutClassificationInput[]
     createMany?: TestCreateManyClassificationInputEnvelope
     connect?: TestWhereUniqueInput | TestWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type TemplateTestUpdateOneRequiredWithoutClassificationsNestedInput = {
@@ -10227,7 +10271,7 @@ export namespace Prisma {
   export type AlternativeCreateWithoutTemplateTestInput = {
     id?: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     answers?: AnswerCreateNestedManyWithoutAlternativeInput
@@ -10236,7 +10280,7 @@ export namespace Prisma {
   export type AlternativeUncheckedCreateWithoutTemplateTestInput = {
     id?: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     answers?: AnswerUncheckedCreateNestedManyWithoutAlternativeInput
@@ -10362,7 +10406,7 @@ export namespace Prisma {
     id?: StringFilter<"Alternative"> | string
     templateTestId?: StringFilter<"Alternative"> | string
     content?: StringFilter<"Alternative"> | string
-    value?: StringFilter<"Alternative"> | string
+    value?: IntFilter<"Alternative"> | number
     createdAt?: DateTimeFilter<"Alternative"> | Date | string
     updatedAt?: DateTimeFilter<"Alternative"> | Date | string
   }
@@ -10986,7 +11030,7 @@ export namespace Prisma {
   export type AlternativeCreateWithoutAnswersInput = {
     id?: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
     templateTest: TemplateTestCreateNestedOneWithoutAlternativesInput
@@ -10996,7 +11040,7 @@ export namespace Prisma {
     id?: string
     templateTestId: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11078,7 +11122,7 @@ export namespace Prisma {
   export type AlternativeUpdateWithoutAnswersInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     templateTest?: TemplateTestUpdateOneRequiredWithoutAlternativesNestedInput
@@ -11088,7 +11132,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     templateTestId?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11103,7 +11147,7 @@ export namespace Prisma {
   export type AlternativeCreateManyTemplateTestInput = {
     id?: string
     content: string
-    value: string
+    value: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11152,7 +11196,7 @@ export namespace Prisma {
   export type AlternativeUpdateWithoutTemplateTestInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answers?: AnswerUpdateManyWithoutAlternativeNestedInput
@@ -11161,7 +11205,7 @@ export namespace Prisma {
   export type AlternativeUncheckedUpdateWithoutTemplateTestInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answers?: AnswerUncheckedUpdateManyWithoutAlternativeNestedInput
@@ -11170,7 +11214,7 @@ export namespace Prisma {
   export type AlternativeUncheckedUpdateManyWithoutTemplateTestInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
-    value?: StringFieldUpdateOperationsInput | string
+    value?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
