@@ -31,7 +31,7 @@ model TemplateTest {
   // Relación con la tabla Classification
   classifications Classification[]
   // Relación con la tabla Test
-  tests           Test[]
+  testsPerformed  TestPerformed[]
 }
 
 model Question {
@@ -79,17 +79,17 @@ model Classification {
   templateTest    TemplateTest @relation(fields: [templateTestId], references: [id], onDelete: Cascade)
   
   // Relación con la tabla Test
-  tests          Test[]
+  testsPerformed  TestPerformed[]
   
 }
 
-model Test {
-  @@map("TESTS")
+model TestPerformed {
+  @@map("TESTS_PERFORMED")
   id                String    @id @default(uuid())
   score             Int
   classificationId  String    @map("classification_id")
   templateTestId    String    @map("template_test_id")
-  userId           String    @map("user_id")
+  userId            String    @map("user_id")
 
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
@@ -105,17 +105,17 @@ model Test {
 
 model Answer {
   @@map("ANSWERS")
-  id              String    @id @default(uuid())
-  testId          String    @map("test_id")
-  questionId      String    @map("question_id")
-  alternativeId   String    @map("alternative_id")
-  createdAt       DateTime  @default(now()) @map("created_at")
-  updatedAt       DateTime  @updatedAt @map("updated_at")
+  id                String    @id @default(uuid())
+  testPerformedId   String    @map("test_performed_id")
+  questionId        String    @map("question_id")
+  alternativeId     String    @map("alternative_id")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
 
   // TestId como llave foránea de Answer
-  test            Test      @relation(fields: [testId], references: [id], onDelete: Cascade)
+  testPerformed  TestPerformed   @relation(fields: [testPerformedId], references: [id], onDelete: Cascade)
   // QuestionId como llave foránea de Answer
-  question        Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  question        Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
   // AlternativeId como llave foránea de Answer
-  alternative     Alternative @relation(fields: [alternativeId], references: [id], onDelete: Cascade)
+  alternative     Alternative     @relation(fields: [alternativeId], references: [id], onDelete: Cascade)
 }

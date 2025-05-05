@@ -157,7 +157,7 @@ exports.Prisma.ClassificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.TestScalarFieldEnum = {
+exports.Prisma.TestPerformedScalarFieldEnum = {
   id: 'id',
   score: 'score',
   classificationId: 'classificationId',
@@ -169,7 +169,7 @@ exports.Prisma.TestScalarFieldEnum = {
 
 exports.Prisma.AnswerScalarFieldEnum = {
   id: 'id',
-  testId: 'testId',
+  testPerformedId: 'testPerformedId',
   questionId: 'questionId',
   alternativeId: 'alternativeId',
   createdAt: 'createdAt',
@@ -192,7 +192,7 @@ exports.Prisma.ModelName = {
   Question: 'Question',
   Alternative: 'Alternative',
   Classification: 'Classification',
-  Test: 'Test',
+  TestPerformed: 'TestPerformed',
   Answer: 'Answer'
 };
 
