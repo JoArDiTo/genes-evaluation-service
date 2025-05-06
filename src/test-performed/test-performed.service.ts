@@ -1,6 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateTestPerformedDto } from './dto/create-test-performed.dto';
-import { UpdateTestPerformedDto } from './dto/update-test-performed.dto';
 import { PrismaClient } from 'generated/prisma';
 import { RpcException } from '@nestjs/microservices';
 
