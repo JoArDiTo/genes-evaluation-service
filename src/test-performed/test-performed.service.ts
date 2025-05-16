@@ -48,9 +48,23 @@ export class TestPerformedService extends PrismaClient implements OnModuleInit {
 
   }
 
-  findAll(userId: string) {
-    return this.testPerformed.findMany({
+  async findAll(userId: string) {
+    const tests = await this.testPerformed.findMany({
       where: { userId }
+    })
+
+    const templateTests = await this.templateTest.findMany({})
+    const classifications = await this.classification.findMany({})
+
+    return tests.map((test) => {
+      const templateTestName = templateTests.find((templateTest) => templateTest.id === test.templateTestId )?.name
+      const interpretation = classifications.find((classification) => classification.id === test.classificationId)?.interpretation
+      const { templateTestId:_, classificationId:__, ...testData } = test
+      return {
+        templateTest: templateTestName,
+        ...testData,
+        interpretation
+      }
     })
   }
 
@@ -77,12 +91,18 @@ export class TestPerformedService extends PrismaClient implements OnModuleInit {
       where: { testPerformedId: id }
     });
 
+    const questions = await this.question.findMany({})
+
+    const alternatives = await this.alternative.findMany({})
+
     const { updatedAt:_, classificationId:__, templateTestId:___,  ...testPerformed } = existingTestPerformed;
     
     const answersWithQuestion = await Promise.all(answers.map(async ({ questionId, alternativeId }) => {
-      const question = await this.question.findUnique({ where: { id: questionId } });
+      // const question = await this.question.findUnique({ where: { id: questionId } });
+      const question = questions.find((question) => question.id === questionId)
 
-      const alternative = await this.alternative.findUnique({ where: { id: alternativeId } });
+      // const alternative = await this.alternative.findUnique({ where: { id: alternativeId } });
+      const alternative = alternatives.find((alternative) => alternative.id === alternativeId)
 
       return { question: question?.content, alternative: alternative?.content, value: alternative?.value };
     }))
